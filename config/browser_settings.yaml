@@ -1,0 +1,51 @@
+firefox:
+  settings:
+    preferences:
+      # General Preferences
+      dom.webnotifications.enabled: false
+      dom.push.enabled: false
+      dom.webdriver.enabled: false
+      useAutomationExtension: false
+
+      # Download Preferences
+      # browser.download.folderList: 2
+      # browser.download.dir: "/dev/null"
+      # browser.helperApps.neverAsk.saveToDisk: "application/pdf"
+      # browser.download.manager.showWhenStarting: false
+      # browser.download.manager.focusWhenStarting: false
+      # browser.download.manager.closeWhenDone: true
+      # browser.download.manager.showAlertOnComplete: false
+      # browser.download.manager.useWindow: false
+      # browser.download.manager.alertOnEXEOpen: false
+      # browser.helperApps.alwaysAsk.force: true
+      # browser.download.manager.retention: 0
+
+      # Cache Preferences
+      browser.cache.disk.enable: false
+      browser.cache.memory.enable: false
+      browser.cache.offline.enable: false
+
+      # User Agent
+      # general.useragent.override: "Mozilla/5.0..."
+
+      # Image Preferences
+      permissions.default.image: 2
+
+      # Network Preferences
+      # network.stricttransportsecurity.preloadlist: false
+      # network.http.use-cache: false
+      # network.http.phishy-userpass-length: 255
+
+      # Security Preferences
+      # security.ssl.enable_ocsp_stapling: false
+      # security.ssl.allow_unrestricted_renego_everywhere__temporarily_available_pref: true
+
+      # Disable Firefox auto-update
+      app.update.auto: false
+      app.update.enabled: false
+      app.update.silent: true
+      app.update.staging.enabled: false
+
+    arguments:
+      # - "--headless"
+      # - "--disable-gpu"

@@ -1,0 +1,21 @@
+
+LoginPageLocators : >-
+  USERNAME : email
+  PASSWORD : current-password
+  CHECKBOX : checkbox
+  SUBMIT : submit
+
+FilterPageLocators : >-
+    FILTER : Filter
+    LOCATION : Sportzentrum Hoheluft
+    APPLY_FILTER : anwenden
+    FILTER_NUMBER : Filter
+
+CourseLocators : >-
+  # COURSE_DAY comes from db
+  CANCELLED : Der Verein hat diesen Termin abgesagt
+  BOOKABLE : &BOOKABLE Angebot buchen für
+  BOOK_PERSON : *BOOKABLE
+  INVOICE_PERSON : Rechnungsempfänger
+  AGREEGTC : Teilnahme- und Stornierungsbedingungen
+  BOOK : Verbindlich buchen
