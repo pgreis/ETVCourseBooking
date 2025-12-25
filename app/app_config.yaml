@@ -1,0 +1,17 @@
+column_config:
+  weekday_ger_abb:
+    label: "Wochentag (Abkürzung)"
+    help: "Wähle einen gültigen Wochentag (Mo-So)"
+    options: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+
+  person:
+    label: "Vorname Nachname"
+    help: "Schreibweise des Namens wie im System hinterlegt"
+
+  orig_course_name:
+    label: "Kursname (original)"
+    help: "Schreibweise des Kurses wie im System hinterlegt"
+
+  is_registration_active:
+    label: "Automatische Anmeldung aktiv"
+    help: "Wenn aktiviert, wird versucht, den Kurs automatisch zu buchen"

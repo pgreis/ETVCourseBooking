@@ -8,13 +8,13 @@ LoginPageLocators :
 FilterPageLocators :
     FILTER : Filter
     LOCATION : Sportzentrum Hoheluft
-    APPLY_FILTER : anwenden
+    APPLY_FILTER : Angebote anzeigen
     FILTER_NUMBER : Filter
 
-CourseLocators :
+BookingLocators :
   # COURSE_DAY comes from db
   CANCELLED : Der Verein hat diesen Termin abgesagt
-  BOOKABLE : &BOOKABLE Angebot buchen für
+  BOOKABLE : &BOOKABLE Buchen für
   BOOK_PERSON : *BOOKABLE
   INVOICE_PERSON : Rechnungsempfänger
   AGREEGTC : Teilnahme- und Stornierungsbedingungen

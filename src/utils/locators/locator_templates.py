@@ -2,14 +2,14 @@ from selenium.webdriver.common.by import By
 
 class ResolveLocators:
     @classmethod
-    def resolve(cls, locator, **placeholders):
+    def _resolve(cls, locator, **placeholders):
         by, value = locator
         return by, value.format(**placeholders)
 
     @classmethod
     def resolve_all(cls, **placeholders):
         return {
-            name: cls.resolve(getattr(cls, name), **placeholders)
+            name: cls._resolve(getattr(cls, name), **placeholders)
             for name in cls.__dict__
             if name.isupper()
         }
@@ -25,12 +25,12 @@ class LoginPageLocators(ResolveLocators):
 class FilterPageLocators(ResolveLocators):
     FILTER       = (By.XPATH, "//button[contains(normalize-space(.), '{FILTER}')]")
     LOCATION     = (By.XPATH, "//option[contains(normalize-space(.), '{LOCATION}')]")
-    DAY_TEMP     = (By.XPATH, "//span[contains(normalize-space(.), '{DAY_GER_ABB}')]/preceding-sibling::input") # Placeholder for the german abbrivated day
-    ANWENDEN     = (By.XPATH, "//button[contains(normalize-space(.), '{APPLY_FILTER}')]")
+    WEEKDAY      = (By.XPATH, "//span[contains(normalize-space(.), '{DAY_GER_ABB}')]/preceding-sibling::input") # Placeholder for the german abbrivated day
+    APPLY_FILTER = (By.XPATH, "//button[contains(normalize-space(.), '{APPLY_FILTER}')]")
     FILTERNUMBER = (By.XPATH, "//button[contains(normalize-space(.), '{FILTER}')]/following-sibling::div")
 
 
-class CourseLocators(ResolveLocators):
+class BookingLocators(ResolveLocators):
     COURSE_DAY     = (By.XPATH, "//a[contains(normalize-space(.), '{COURSE_NAME}')]")
     CANCELLED      = (By.XPATH, "//div[contains(normalize-space(.), '{CANCELLED}')]")
     BOOKABLE       = (By.XPATH, "//span[contains(normalize-space(.), '{BOOKABLE}')]/following-sibling::kgr-select-control")
