@@ -1,0 +1,48 @@
+version: 1
+disable_existing_loggers: False
+
+formatters:
+  simple:
+    format: '%(asctime)s %(levelname)s [%(name)s] %(message)s'
+  verbose:
+    format: '%(asctime)s %(levelname)s [%(name)s] %(filename)s:%(lineno)d %(message)s'
+  json:
+    (): logger.logger.JsonFormatter
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: simple
+    stream: ext://sys.stdout
+  file:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: verbose
+    filename: logs/app.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 7
+  errors:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: verbose
+    filename: logs/errors.log
+    maxBytes: 10485760
+    backupCount: 10
+  json_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: json
+    filename: logs/app.json
+    maxBytes: 10485760
+    backupCount: 7
+
+root:
+  level: INFO
+  handlers: [console, file, json_file]
+
+loggers:
+  etvcourse:
+    level: DEBUG
+    handlers: [console, file, json_file]
+    propagate: False
