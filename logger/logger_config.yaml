@@ -17,7 +17,7 @@ handlers:
     stream: ext://sys.stdout
   file:
     class: logging.handlers.RotatingFileHandler
-    level: DEBUG
+    level: INFO
     formatter: verbose
     filename: logs/app.log
     maxBytes: 10485760  # 10MB
@@ -39,7 +39,7 @@ handlers:
 
 root:
   level: INFO
-  handlers: [console, file, json_file]
+  handlers: [console, file]
 
 loggers:
   etvcourse:

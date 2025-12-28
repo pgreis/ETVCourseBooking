@@ -1,20 +1,22 @@
 import pandas as pd
 from sqlalchemy import create_engine, exc
-import os
+
+from logger import get_logger
 
 class DatabaseHandler():
    
-    def __init__(self, db_url:str, table_name:str="etv_courses"):
+    def __init__(self, db_url:str, table_name:str="etv_courses", logger=None):
             self.table_name = table_name
             self.default_table_name = f"{self.table_name}_default_table"
             self.db_url = db_url
             self.engine = create_engine(self.db_url)
+            self.logger = logger or get_logger(__name__)
         
             try:
                 self.engine.connect()
-                print("engine initialisation successfully")
+                self.logger.info("Database engine initialised successfully.")
             except exc.SQLAlchemyError as err:
-                print("engine initialisation error: ", err)
+                self.logger.error("engine initialisation error: ", err)
 
     def create_default_table(self):
         default_table = pd.DataFrame({"weekday": ["Mo", "Di", "Mi", "Do", "Fr"] * 2,

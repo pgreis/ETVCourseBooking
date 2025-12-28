@@ -25,8 +25,8 @@ load_dotenv()
 
 def main():
 
-    IS_HEADLESS = False
-    IS_REMOTE = False
+    IS_HEADLESS = True
+    IS_REMOTE = True
     N_FILTER_TRIES = 2
     N_CORRECT_FILTER = 3
 
@@ -55,6 +55,7 @@ def main():
     driver_cl = DriverInitialization(settings=firefox_cfg["settings"],
                                      arguments=firefox_cfg["arguments"])
     driver = driver_cl.create_firefox_driver(is_headless=IS_HEADLESS,
+                                             remote_url="http://selenium:4444/wd/hub",
                                              is_remote=IS_REMOTE)
 
     ## login
