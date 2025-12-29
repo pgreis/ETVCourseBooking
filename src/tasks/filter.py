@@ -22,10 +22,13 @@ class Filter:
         self.go_to_course_overview_page(course_overview_url=self.course_overview_url)
         self.click_filter(filter_locator=self.filter_locators_filled["FILTER"],
                           click_action=self.click_action)
+        time.sleep(2)
         self.click_location(location_locator=self.filter_locators_filled["LOCATION"],
                             click_action=self.click_action)
+        time.sleep(2)
         self.click_weekday(weekday_locator=self.filter_locators_filled["WEEKDAY"],
                            click_action=self.click_action)
+        time.sleep(2)
         self.click_apply_button(apply_button_locator=self.filter_locators_filled["APPLY_FILTER"],
                                 click_action=self.click_action)
         time.sleep(10) 
@@ -67,4 +70,4 @@ class Filter:
         element = self.driver.find_element(*applied_filter_locator)
         filter_number = element.text
         self.logger.debug("Got applied filter number: %s", filter_number)
-        self.ctx["applied_filter_number"] = filter_number
+        self.ctx["applied_filter_number"] = int(filter_number)

@@ -3,7 +3,7 @@ from selenium.webdriver.firefox.options import Options
 
 class DriverInitialization:
 
-    def __init__(self, settings:dict, arguments:list=list(), full_screen:bool=True):
+    def __init__(self, settings:dict, arguments:list=list()):
         self.settings = settings
         self.arguments = arguments
         self.options = Options()
@@ -25,6 +25,6 @@ class DriverInitialization:
             self.options.add_argument("--headless")
 
         if is_remote:
-            return webdriver.Remote(command_executor=remote_url, options=self.options).maximize_window()
+            return webdriver.Remote(command_executor=remote_url, options=self.options)
 
-        return webdriver.Firefox(options=self.options).maximize_window()
+        return webdriver.Firefox(options=self.options)

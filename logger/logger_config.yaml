@@ -43,6 +43,6 @@ root:
 
 loggers:
   etvcourse:
-    level: DEBUG
+    level: INFO
     handlers: [console, file, json_file]
     propagate: False

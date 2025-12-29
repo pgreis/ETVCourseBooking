@@ -25,21 +25,21 @@ load_dotenv()
 
 def main():
 
-    IS_HEADLESS = True
-    IS_REMOTE = True
-    N_FILTER_TRIES = 2
-    N_CORRECT_FILTER = 3
-
+    tasks_cfg = {"is_headless" : True,
+                 "is_remote" : True,
+                 "n_filter_tries" : 2,
+                 "n_correct_filter" : 3,
+                 "selenium_remote_url" : "http://selenium:4444/wd/hub",
+                 "db_url": os.getenv("DB_URL"),
+                 "table_name": "etv_courses",
+                 "login_name" : os.getenv("ETV_LOGIN_NAME"),
+                 "login_url": os.getenv("LOGIN_URL"),
+                 "login_name": os.getenv("ETV_LOGIN_NAME"),
+                 "password": os.getenv("ETV_LOGIN_PW"),
+                 "course_overview_url": os.getenv("COURSE_OVERVIEW_URL")}
+    
     locator_fillings = read_yaml_file(os.path.join("src", "utils", "locators","locator_fillings.yaml"))
     firefox_cfg = read_yaml_file(os.path.join("config", "browser_settings.yaml"))["firefox"]
-    tasks_cfg = {"db_url": os.getenv("DB_URL"),
-           "table_name": "etv_courses",
-           "login_name" : os.getenv("ETV_LOGIN_NAME"),
-           "login_url": os.getenv("LOGIN_URL"),
-           "login_name": os.getenv("ETV_LOGIN_NAME"),
-           "password": os.getenv("ETV_LOGIN_PW"),
-           "course_overview_url": os.getenv("COURSE_OVERVIEW_URL")}
-    
 
     db = DatabaseHandler(db_url=tasks_cfg["db_url"])
     db.load_table(table_name=tasks_cfg["table_name"])
@@ -52,11 +52,11 @@ def main():
         logger.info("No active courses for %s", weekday_abbr)
         sys.exit()
 
-    driver_cl = DriverInitialization(settings=firefox_cfg["settings"],
-                                     arguments=firefox_cfg["arguments"])
-    driver = driver_cl.create_firefox_driver(is_headless=IS_HEADLESS,
-                                             remote_url="http://selenium:4444/wd/hub",
-                                             is_remote=IS_REMOTE)
+    driver_cl = DriverInitialization(settings=firefox_cfg["settings"]["preferences"],
+                                     arguments=firefox_cfg["settings"]["arguments"])
+    driver = driver_cl.create_firefox_driver(is_headless=tasks_cfg["is_headless"],
+                                             remote_url=tasks_cfg["selenium_remote_url"],
+                                             is_remote=tasks_cfg["is_remote"])
 
     ## login
     login_locators_filled = fill_and_resolve_locators(template_class=LoginPageLocators,
@@ -67,37 +67,53 @@ def main():
                        login_url=tasks_cfg["login_url"],
                        login_name=tasks_cfg["login_name"],
                        password=tasks_cfg["password"],
-                       locators_filled=login_locators_filled)
+                       locators_filled=login_locators_filled,
+                       logger=logger)
     login_pipe.run_login()
 
     for single_course in active_courses:
-        logger.info("Starting booking flow for course: %s", single_course["orig_course_name"], "for person: %s", single_course["person"])
+        logger.info(f"Starting booking flow for course: {single_course["orig_course_name"]} for person: {single_course["person"]}")
 
         # filter
         filter_locators_filled = fill_and_resolve_locators(template_class=FilterPageLocators,
                                                            base_placeholders=locator_fillings['FilterPageLocators'],
                                                            extra_fields={"DAY_GER_ABB": single_course.get("weekday_ger_abb")},)
 
-        for _ in range(N_FILTER_TRIES):
-            filter_pipe = Filter(driver=driver,
-                                 course_overview_url=tasks_cfg["course_overview_url"],
-                                 filter_locators_filled=filter_locators_filled)
-            filter_pipe.run_filter()
+        for _ in range(tasks_cfg["n_filter_tries"]):
 
-            if filter_pipe.ctx["applied_filter_number"] == N_CORRECT_FILTER:
-                    break
-            else:
-                logger.warning("Incorrect number of filters applied: %s", filter_pipe.ctx["applied_filter_number"])
+            try:
+                filter_pipe = Filter(driver=driver,
+                                    course_overview_url=tasks_cfg["course_overview_url"],
+                                    filter_locators_filled=filter_locators_filled,
+                                    logger=logger)
+                filter_pipe.run_filter()
 
-        # booking
-        booking_locators_filled = fill_and_resolve_locators(template_class=BookingLocators,
-                                                            base_placeholders=locator_fillings['BookingLocators'],
-                                                            extra_fields={"COURSE_NAME": single_course.get("orig_course_name"),
-                                                                          "PERSON_NAME": single_course.get("person")},)
+                if filter_pipe.ctx["applied_filter_number"] != tasks_cfg["n_correct_filter"]:
+                        logger.warning("Incorrect number of filters applied: %s", filter_pipe.ctx["applied_filter_number"])
+                        continue
+                else:
+                    logger.debug("Correct numbers of filter applied")
+                    
 
-        booking_pipe = Booking(driver=driver,
-                               booking_locators_filled=booking_locators_filled)
-        booking_pipe.run_booking()
+                # booking
+                booking_locators_filled = fill_and_resolve_locators(template_class=BookingLocators,
+                                                                    base_placeholders=locator_fillings['BookingLocators'],
+                                                                    extra_fields={"COURSE_NAME": single_course.get("orig_course_name"),
+                                                                                  "PERSON_NAME": single_course.get("person")},)
+
+                booking_pipe = Booking(driver=driver,
+                                       booking_locators_filled=booking_locators_filled,
+                                       logger=logger)
+                booking_pipe.run_booking()
+                logger.info(f"Booking of {single_course["orig_course_name"]} for person: {single_course["person"]} successful")
+                break
+
+
+            except Exception as err:
+                logger.error("Error in filter/ booking process: ", err)
+
+    logger.info("Closing process...")
+    sys.exit()
 
 if __name__ == "__main__":
     main()

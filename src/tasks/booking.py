@@ -24,9 +24,13 @@ class Booking:
         time.sleep(10)  # wait for page to load
         self.check_if_bookable(bookable_locator=self.booking_locators_filled["BOOKABLE"])
         if self.ctx["step_3/is_course_bookable"]:
+            time.sleep(1)
             self.book_for_person(person_locator=self.booking_locators_filled["BOOK_PERSON"])
+            time.sleep(1)
             self.select_invoice_person(invoice_person_locator=self.booking_locators_filled["INVOICE_PERSON"])
-            self.checkmark_terms_and_conditions(terms_locator=self.booking_locators_filled["AGREEGTC"])        
+            time.sleep(1)
+            self.checkmark_terms_and_conditions(terms_locator=self.booking_locators_filled["AGREEGTC"])
+            time.sleep(1)        
             self.book(book_locator=self.booking_locators_filled["BOOK"])
         else:
             self.logger.debug("Course is not bookable, skipping booking step")
