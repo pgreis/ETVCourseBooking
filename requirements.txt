@@ -5,3 +5,4 @@ PyYAML>=6.0
 pandas>=1.5.0
 SQLAlchemy>=1.4
 psycopg2-binary>=2.9
+git+https://${GITHUB_TOKEN}@github.com/pgreis/etv_course_db.git@v0.1.0#egg=db-handler
