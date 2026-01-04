@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   selenium:
     image: selenium/standalone-firefox:latest
@@ -5,12 +7,19 @@ services:
     ports:
       - "4444:4444"
 
-  python:
+  course-bot:
     build:
       context: .
       dockerfile: Dockerfile.bot
+      # Pass BuildKit secret for private GitHub repo
+      secrets:
+        - github_token
     container_name: course-bot
     env_file:
       - .env
     depends_on:
       - selenium
+
+secrets:
+  github_token:
+    file: .github_token
