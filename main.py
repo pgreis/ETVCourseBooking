@@ -7,7 +7,7 @@ logger = get_logger(__name__)
 import os
 from dotenv import load_dotenv
 
-from src.utils.db.db_handling import DatabaseHandler
+from db_handler import DatabaseHandler
 from src.utils.help_functions import read_yaml_file
 from src.utils.locators.locator_help_fns import fill_and_resolve_locators
 from src.utils.locators.locator_templates import (LoginPageLocators,
