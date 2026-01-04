@@ -38,5 +38,10 @@ jobs:
       - name: Run course-bot container
         run: |
           docker run --rm \
-            --env-file .env \
+            -e DB_URL \
+            -e TABLE_NAME \
+            -e ETV_LOGIN_NAME \
+            -e LOGIN_URL \
+            -e ETV_LOGIN_PW \
+            -e COURSE_OVERVIEW_URL \
             course-bot
