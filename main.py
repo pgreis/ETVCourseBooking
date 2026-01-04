@@ -1,7 +1,8 @@
 
 import sys
+import time
 from logger import setup_logging, get_logger
-setup_logging()  # loads logger/logger_config.yaml
+setup_logging()
 logger = get_logger(__name__)
 
 import os
@@ -31,7 +32,7 @@ def main():
                  "n_correct_filter" : 3,
                  "selenium_remote_url" : "http://selenium:4444/wd/hub",
                  "db_url": os.getenv("DB_URL"),
-                 "table_name": "etv_courses",
+                 "table_name": os.getenv("TABLE_NAME"),
                  "login_name" : os.getenv("ETV_LOGIN_NAME"),
                  "login_url": os.getenv("LOGIN_URL"),
                  "login_name": os.getenv("ETV_LOGIN_NAME"),
@@ -52,6 +53,8 @@ def main():
         logger.info("No active courses for %s", weekday_abbr)
         sys.exit()
 
+
+    time.sleep(15) # wait to give selenium standalone container more time to wake up  
     driver_cl = DriverInitialization(settings=firefox_cfg["settings"]["preferences"],
                                      arguments=firefox_cfg["settings"]["arguments"])
     driver = driver_cl.create_firefox_driver(is_headless=tasks_cfg["is_headless"],
