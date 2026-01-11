@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
 from src.utils.selenium.error_exception_handler import ClickInterceptedHandler, SleepThreeSeconds, retry_with_handlers
@@ -48,8 +47,6 @@ class GetAttributeAction(ABC):
     @abstractmethod
     def execute(self, locator: tuple, seconds_to_wait: float = 3) -> str:
         pass
-
-
 
 
 # click

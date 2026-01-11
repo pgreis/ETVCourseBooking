@@ -75,7 +75,7 @@ def main():
     login_pipe.run_login()
 
     for single_course in active_courses:
-        logger.info(f"Starting booking flow for course: {single_course["orig_course_name"]} for person: {single_course["person"]}")
+        logger.info(f"Starting booking flow for COURSE: {single_course["orig_course_name"]} for PERSON: {single_course["person"]}")
 
         # filter
         filter_locators_filled = fill_and_resolve_locators(template_class=FilterPageLocators,
@@ -108,7 +108,6 @@ def main():
                                        booking_locators_filled=booking_locators_filled,
                                        logger=logger)
                 booking_pipe.run_booking()
-                logger.info(f"Booking of {single_course["orig_course_name"]} for person: {single_course["person"]} successful")
                 break
 
 

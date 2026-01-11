@@ -1,9 +1,9 @@
 import time
 
-from src.utils.selenium.selenium_actions import (ClickAction,
-                                                 EnterTextAction,
+from src.utils.selenium.selenium_actions import (#ClickAction,
+                                                 #EnterTextAction,
                                                  ClickWhenClickable,
-                                                 EnterTextWhenVisible,
+                                                 #EnterTextWhenVisible,
                                                  GetHrefWhenVisible)
 from logger import get_logger
 
@@ -32,8 +32,9 @@ class Booking:
             self.checkmark_terms_and_conditions(terms_locator=self.booking_locators_filled["AGREEGTC"])
             time.sleep(1)        
             self.book(book_locator=self.booking_locators_filled["BOOK"])
+            self.logger.info("Booking flow complete")
         else:
-            self.logger.debug("Course is not bookable, skipping booking step")
+            self.logger.info("Course is not bookable, skipping booking step")
 
     # step 1
     def get_course_link(self, course_day_locator: tuple) -> None:

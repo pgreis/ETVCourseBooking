@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from typing import Literal
 import pandas as pd
 
 def get_tomorrow_weekday_abbr() -> str:
