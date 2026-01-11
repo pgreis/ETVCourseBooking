@@ -27,10 +27,10 @@ load_dotenv()
 def main():
 
     tasks_cfg = {"is_headless" : True,
-                 "is_remote" : True,
+                 "is_remote" : False,
                  "n_filter_tries" : 2,
                  "n_correct_filter" : 3,
-                 "selenium_remote_url" : "http://selenium:4444/wd/hub",
+                 "selenium_remote_url" : "",
                  "db_url": os.getenv("DB_URL"),
                  "table_name": os.getenv("TABLE_NAME"),
                  "login_name" : os.getenv("ETV_LOGIN_NAME"),
