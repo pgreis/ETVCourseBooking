@@ -2,7 +2,7 @@ name: Daily Course Bot
 
 on:
   schedule:
-    - cron: "1 0 * * *"
+    - cron: "1 */12 * * *"
   workflow_dispatch:
 
 jobs:
