@@ -2,7 +2,7 @@ name: Daily Course Bot
 
 on:
   schedule:
-    - cron: "1 */12 * * *"
+    - cron: "1 9,10 * * *"
   workflow_dispatch:
 
 jobs:
@@ -15,7 +15,6 @@ jobs:
       LOGIN_URL: ${{ secrets.LOGIN_URL }}
       ETV_LOGIN_PW: ${{ secrets.ETV_LOGIN_PW }}
       COURSE_OVERVIEW_URL: ${{ secrets.COURSE_OVERVIEW_URL }}
-
 
     steps:
       - name: Checkout repository

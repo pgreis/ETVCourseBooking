@@ -38,3 +38,4 @@ class BookingLocators(ResolveLocators):
     INVOICE_PERSON = (By.XPATH, "//kgr-form-field[@label='{INVOICE_PERSON}']/descendant::option[contains(normalize-space(.), '{PERSON_NAME}')]")
     AGREEGTC       = (By.XPATH, "//kgr-form-field[@label='{AGREEGTC}']/descendant::input[@type='checkbox']")
     BOOK           = (By.XPATH, "//button[contains(normalize-space(.), '{BOOK}')]")
+    IS_BOOKED      = (By.XPATH, "//*[contains(normalize-space(.), 'Gebucht für {PERSON_NAME}')]")

@@ -78,4 +78,3 @@ class Booking:
         self.logger.debug("Clicking book button %s", book_locator)
         self.click_action.execute(locator=book_locator)
         self.logger.debug("Clicked book button")
-        

@@ -1,9 +1,11 @@
 
 import sys
 import time
+from datetime import datetime
 from logger import setup_logging, get_logger
 setup_logging()
 logger = get_logger(__name__)
+
 
 import os
 from dotenv import load_dotenv
@@ -45,7 +47,7 @@ def main():
     db = DatabaseHandler(db_url=tasks_cfg["db_url"])
     db.load_table(table_name=tasks_cfg["table_name"])
 
-    weekday_abbr=get_tomorrow_weekday_abbr()
+    weekday_abbr=get_tomorrow_weekday_abbr(add_n_hours=24)
     active_courses = get_active_courses_by_weekday(course_table=db.loaded_table,
                                                    weekday_ger_abb=weekday_abbr)
 
@@ -53,8 +55,6 @@ def main():
         logger.info("No active courses for %s", weekday_abbr)
         sys.exit()
 
-
-    time.sleep(15) # wait to give selenium standalone container more time to wake up  
     driver_cl = DriverInitialization(settings=firefox_cfg["settings"]["preferences"],
                                      arguments=firefox_cfg["settings"]["arguments"])
     driver = driver_cl.create_firefox_driver(is_headless=tasks_cfg["is_headless"],
@@ -75,7 +75,10 @@ def main():
     login_pipe.run_login()
 
     for single_course in active_courses:
-        logger.info(f"Starting booking flow for COURSE: {single_course["orig_course_name"]} for PERSON: {single_course["person"]}")
+        
+        now = datetime.now().astimezone()
+        logger.info(f"Starting booking flow for\nCOURSE: {single_course["orig_course_name"]}\nPERSON: {single_course["person"]}\nSYSTEM TIME: {now.strftime('%Y-%m-%d %H:%M:%S (%A) %Z %z')}")
+
 
         # filter
         filter_locators_filled = fill_and_resolve_locators(template_class=FilterPageLocators,
@@ -114,6 +117,18 @@ def main():
             except Exception as err:
                 logger.error("Error in filter/ booking process: ", err)
 
+            finally:
+
+                is_booked_xpath = BookingLocators._resolve(locator=BookingLocators.IS_BOOKED,
+                                                           PERSON_NAME=single_course.get("person"))
+                is_course_booked = driver.find_elements(*is_booked_xpath) != []
+
+                if is_course_booked:
+                    logger.info(f"COURSE: {single_course['orig_course_name']}\nPERSON: {single_course['person']}\nIS BOOKED: True")
+                    break
+                else:
+                    logger.warning(f"COURSE: {single_course['orig_course_name']}\nPERSON: {single_course['person']}\nIS BOOKED: False")
+          
     logger.info("Closing process...")
     sys.exit()
 
