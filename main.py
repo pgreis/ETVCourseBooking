@@ -77,7 +77,7 @@ def main():
     for single_course in active_courses:
         
         now = datetime.now().astimezone()
-        logger.info(f"Starting booking flow for\nCOURSE: {single_course["orig_course_name"]}\nPERSON: {single_course["person"]}\nSYSTEM TIME: {now.strftime('%Y-%m-%d %H:%M:%S (%A) %Z %z')}")
+        logger.info(f"Starting booking flow for\nCOURSE: {single_course["orig_course_name"]}\nWEEKDAY: {weekday_abbr}\nPERSON: {single_course["person"]}\nSYSTEM TIME: {now.strftime('%Y-%m-%d %H:%M:%S (%A) %Z %z')}")
 
 
         # filter
@@ -124,7 +124,7 @@ def main():
                 is_course_booked = driver.find_elements(*is_booked_xpath) != []
 
                 if is_course_booked:
-                    logger.info(f"COURSE: {single_course['orig_course_name']}\nPERSON: {single_course['person']}\nIS BOOKED: True")
+                    logger.info(f"COURSE: {single_course['orig_course_name']}\nWEEKDAY: {weekday_abbr}\nPERSON: {single_course['person']}\nIS BOOKED: True")
                     break
                 else:
                     logger.warning(f"COURSE: {single_course['orig_course_name']}\nPERSON: {single_course['person']}\nIS BOOKED: False")
