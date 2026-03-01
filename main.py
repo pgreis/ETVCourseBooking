@@ -83,7 +83,7 @@ def main():
         # filter
         filter_locators_filled = fill_and_resolve_locators(template_class=FilterPageLocators,
                                                            base_placeholders=locator_fillings['FilterPageLocators'],
-                                                           extra_fields={"DAY_GER_ABB": single_course.get("weekday_ger_abb")},)
+                                                           extra_fields={"DAY_GER_ABB": single_course.get("weekday")},)
 
         for _ in range(tasks_cfg["n_filter_tries"]):
 
