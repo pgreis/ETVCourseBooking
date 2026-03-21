@@ -53,7 +53,7 @@ class GetAttributeAction(ABC):
 class ClickWhenVisible(ClickAction):
 
     @retry_with_handlers(exception_handlers=handlers, max_retries=3, delay=0.5)
-    def execute(self, locator: tuple, seconds_to_wait: float = 3) -> None:
+    def execute(self, locator: tuple, seconds_to_wait: float = 10) -> None:
         element = WebDriverWait(driver=self.driver,
                                 timeout=seconds_to_wait).until(EC.visibility_of_element_located(locator = locator))
         element.click()

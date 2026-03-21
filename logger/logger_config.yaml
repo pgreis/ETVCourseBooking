@@ -12,7 +12,7 @@ formatters:
 handlers:
   console:
     class: logging.StreamHandler
-    level: INFO
+    level: DEBUG
     formatter: simple
     stream: ext://sys.stdout
   file:
@@ -38,11 +38,11 @@ handlers:
     backupCount: 7
 
 root:
-  level: INFO
+  level: DEBUG
   handlers: [console, file]
 
 loggers:
   etvcourse:
-    level: INFO
+    level: DEBUG
     handlers: [console, file, json_file]
     propagate: False

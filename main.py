@@ -115,7 +115,7 @@ def main():
 
 
             except Exception as err:
-                logger.error("Error in filter/ booking process: ", err)
+                logger.exception("Error in filter/ booking process")
 
             finally:
 
